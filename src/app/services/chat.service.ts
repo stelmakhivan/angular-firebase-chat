@@ -20,7 +20,8 @@ export class ChatService {
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth
   ) {
-    this.chatMessages = this.afs.collection('messages').valueChanges();
+    this.chatCollection = this.afs.collection('messages', ref => ref.limit(25).orderBy('timeSent', 'asc'));
+    this.chatMessages = this.chatCollection.valueChanges();
     // this.afAuth.authState.subscribe(auth => {
       // if (auth !== undefined && auth !== null) {
       //   this.user = auth;
@@ -31,18 +32,18 @@ export class ChatService {
     // });
   }
 
-  // sendMessage(message: string) {
-  //   const timestamp = this.getTimeStamp();
-  //   // const email = this.user.email;
-  //   const email = 'test@email.com';
-  //   this.chatMessages.add({
-  //     message: message,
-  //     timeSent: timestamp,
-  //     // userName: this.userName,
-  //     userName: 'Ivan',
-  //     email: email
-  //   });
-  // }
+  sendMessage(message: string) {
+    const timestamp = this.getTimeStamp();
+    // const email = this.user.email;
+    const email = 'test@email.com';
+    this.chatCollection.add({
+      message: message,
+      timeSent: timestamp,
+      // userName: this.userName,
+      userName: 'Ivan',
+      email: email
+    });
+  }
 
   getMessages() {
     return this.chatMessages;
@@ -50,11 +51,12 @@ export class ChatService {
 
   getTimeStamp() {
     const now = new Date();
-    const date =
-      now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
-    const time =
-      now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    // const date =
+    //   now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
+    // const time =
+    //   now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
 
-    return date + ' ' + time;
+    // return date + ' ' + time;
+    return now;
   }
 }

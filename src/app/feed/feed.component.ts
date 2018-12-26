@@ -15,6 +15,7 @@ export class FeedComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.chatService.getMessages().subscribe(messages => {
       this.feed = messages;
+      console.log(this.feed);
     });
   }
 
