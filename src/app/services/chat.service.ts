@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 // import { AuthService } from '../services/auth.service';
 
@@ -51,12 +51,6 @@ export class ChatService {
 
   getTimeStamp() {
     const now = new Date();
-    // const date =
-    //   now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
-    // const time =
-    //   now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-
-    // return date + ' ' + time;
     return now;
   }
 }

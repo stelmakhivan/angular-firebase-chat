@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 import { AppComponent } from './app.component';
 import { ChatFormComponent } from './chat-form/chat-form.component';
@@ -42,6 +43,7 @@ import { AuthService } from './services/auth.service';
     FormsModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireDatabaseModule,
     AngularFireModule.initializeApp(environment.firebase),
   ],
   providers: [ChatService, AuthService],
