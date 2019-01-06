@@ -61,6 +61,12 @@
   cursor: pointer;
 }
 
+#btn-login:disabled {
+  background-color: #eee;
+  color: #999;
+  cursor: not-allowed;
+}
+
 .label {
   font-size: 0.9em;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -12,11 +12,13 @@ export class LoginFormComponent {
   password: string;
   errorMsg: string;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService) {}
 
   login() {
+    const email = this.email;
+    const password = this.password;
     this.authService
-      .login(this.email, this.password)
+      .login(email, password)
       .catch(error => (this.errorMsg = error.message));
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
 import * as firebase from 'firebase/app';
 
 import { ChatMessage } from '../models/chat-message.model';
@@ -22,18 +22,22 @@ export class ChatService {
   constructor(
     private db: AngularFireDatabase,
     private afs: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private router: Router
   ) {
-    this.chatCollection = this.afs.collection('messages', ref => ref.orderBy('timeSent', 'asc'));
-    this.chatMessages = this.chatCollection.valueChanges();
-
     this.afAuth.auth.onAuthStateChanged(auth => {
       if (auth !== undefined && auth !== null) {
         this.user = auth;
+
+        this.chatCollection = this.afs.collection('messages', ref => ref.orderBy('timeSent', 'asc'));
+        this.chatMessages = this.chatCollection.valueChanges();
+
+        this.getUser().valueChanges().subscribe((data: any) => {
+          this.userName = data.displayName;
+        });
+      } else {
+        this.router.navigate(['login']);
       }
-      this.getUser().valueChanges().subscribe((data: any) => {
-        this.userName = data.displayName;
-      });
     });
   }
 
