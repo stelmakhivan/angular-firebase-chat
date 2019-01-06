@@ -19,7 +19,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserItemComponent } from './user-item/user-item.component';
 
 import { appRoutes } from '../routes';
-import { environment } from '../environments/environment';
+import { environment } from '../environments/environment.prod';
 
 import { ChatService } from './services/chat.service';
 import { AuthService } from './services/auth.service';

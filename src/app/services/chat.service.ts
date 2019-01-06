@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
-// import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
+import * as firebase from 'firebase/app';
 
 import { ChatMessage } from '../models/chat-message.model';
 
@@ -10,37 +12,49 @@ import { ChatMessage } from '../models/chat-message.model';
   providedIn: 'root'
 })
 export class ChatService {
-  user: any;
+  user: firebase.User;
   chatCollection: AngularFirestoreCollection<ChatMessage>;
   chatMessages: Observable<ChatMessage[]>;
   chatMessage: ChatMessage;
-  userName: Observable<string>;
+  userName: string;
+  now: Date;
 
   constructor(
+    private db: AngularFireDatabase,
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth
   ) {
-    this.chatCollection = this.afs.collection('messages', ref => ref.limit(25).orderBy('timeSent', 'asc'));
+    this.chatCollection = this.afs.collection('messages', ref => ref.orderBy('timeSent', 'asc'));
     this.chatMessages = this.chatCollection.valueChanges();
-    // this.afAuth.authState.subscribe(auth => {
-      // if (auth !== undefined && auth !== null) {
-      //   this.user = auth;
-      // }
-      // this.getUser().subscribe(a => {
-      //   this.userName = a.displayName;
-      // });
-    // });
+
+    this.afAuth.auth.onAuthStateChanged(auth => {
+      if (auth !== undefined && auth !== null) {
+        this.user = auth;
+      }
+      this.getUser().valueChanges().subscribe((data: any) => {
+        this.userName = data.displayName;
+      });
+    });
+  }
+
+  getUser() {
+    const userId = this.user.uid;
+    const path = `/users/${userId}`;
+    return this.db.object(path);
+  }
+
+  getUsers() {
+    const path = '/users';
+    return this.db.list(path);
   }
 
   sendMessage(message: string) {
     const timestamp = this.getTimeStamp();
-    // const email = this.user.email;
-    const email = 'test@email.com';
+    const email = this.user.email;
     this.chatCollection.add({
       message: message,
       timeSent: timestamp,
-      // userName: this.userName,
-      userName: 'Ivan',
+      userName: this.userName,
       email: email
     });
   }
@@ -50,7 +64,6 @@ export class ChatService {
   }
 
   getTimeStamp() {
-    const now = new Date();
-    return now;
+    return this.now = new Date();
   }
 }

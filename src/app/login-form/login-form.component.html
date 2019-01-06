@@ -1,3 +1,24 @@
-<p>
-  login-form works!
-</p>
+<div class="container">
+  <div class="login-card">
+    <h2 class="heading">Log In</h2>
+      <label class="label">Email</label>
+        <input
+          placeholder="Enter your email address"
+          [(ngModel)]="email"
+          type="email"
+          name="email"
+          class="form-input" />
+      <label class="label">Password</label>
+        <input type="password"
+          placeholder="Enter your password"
+          [(ngModel)]="password"
+          name="password"
+          class="form-input" />
+      <button
+        class="btn"
+        id="btn-login"
+        (click)="login()">
+        Log In
+      </button>
+  </div>
+</div>

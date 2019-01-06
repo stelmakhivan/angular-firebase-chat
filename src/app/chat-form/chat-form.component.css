@@ -28,4 +28,9 @@
 
 .chat-button:hover {
   background-color: #444;
+  cursor: pointer;
+}
+
+.chat-button:disabled {
+  cursor: not-allowed;
 }
